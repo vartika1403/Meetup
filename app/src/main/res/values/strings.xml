@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Meetup</string>
+    <string name="title_activity_splash">Meetup</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="welcome_to_meetup">Welcome To Meetup</string>
+    <string name="hello_want_to_enroll_as_artist_or_looking_for_one">Hello , want to enroll as artist or looking for one?</string>
+    <string name="enroll_as_artist">Enroll as artist</string>
+    <string name="looking_for_artist">Looking For Artist</string>
+</resources>

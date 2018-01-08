@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "163114183350",
+    "firebase_url": "https://meetup-99fea.firebaseio.com",
+    "project_id": "meetup-99fea",
+    "storage_bucket": "meetup-99fea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163114183350:android:742568e6b329564d",
+        "android_client_info": {
+          "package_name": "entertainment.meetup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163114183350-0q7hm1gic0ejeuspmh66k9bl7seogfcl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9Up037dnVPwZs2LESlgHabeCW595fZMw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
