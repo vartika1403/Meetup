@@ -18,6 +18,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 public class NotificationUtil {
-    private static String TAG = NotificationUtil.class.getSimpleName();
+    private static String LOG_TAG = NotificationUtil.class.getSimpleName();
 
     private Context context;
 
@@ -60,42 +61,44 @@ public class NotificationUtil {
                         PendingIntent.FLAG_CANCEL_CURRENT
                 );
 
-        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+        Log.i(LOG_TAG, "notification message resultpendingintent, " + resultPendingIntent);
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 context);
 
         final Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
                 + "://" + context.getPackageName() + "/raw/notification");
-
-        if (!TextUtils.isEmpty(imageUrl)) {
+       /* if (!TextUtils.isEmpty(imageUrl)) {
 
             if (imageUrl != null && imageUrl.length() > 4 && Patterns.WEB_URL.matcher(imageUrl).matches()) {
 
                 Bitmap bitmap = getBitmapFromURL(imageUrl);
 
                 if (bitmap != null) {
-                    showBigNotification(bitmap, mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
+                    showBigNotification(bitmap, icon, title, message, timeStamp, resultPendingIntent);
                 } else {
-                    showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
+                    showSmallNotification(icon, title, message, timeStamp, resultPendingIntent);
                 }
-            }
-        } else {
-            showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
-            playNotificationSound();
-        }
+            }*/
+       /* } else {*/
+            showSmallNotification(builder, icon, title, message, timeStamp, resultPendingIntent);
+           // playNotificationSound();
+       // }
     }
 
-    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
+    private void showSmallNotification(NotificationCompat.Builder builder,int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent) {
 
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
         inboxStyle.addLine(message);
 
+        Log.i(LOG_TAG, "title, " + title);
         Notification notification;
-        notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
+        notification = builder.setSmallIcon(icon).setTicker(title).setWhen(0)
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
+              //  .setSound(alarmSound)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -129,10 +132,7 @@ public class NotificationUtil {
         notificationManager.notify(Config.NOTIFICATION_ID_BIG_IMAGE, notification);
     }
 
-    /**
-     * Downloading push notification image before displaying it in
-     * the notification tray
-     */
+
     public Bitmap getBitmapFromURL(String strURL) {
         try {
             URL url = new URL(strURL);
@@ -160,9 +160,6 @@ public class NotificationUtil {
         }
     }
 
-    /**
-     * Method checks if the app is in background or not
-     */
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

@@ -1,9 +1,13 @@
 package entertainment.meetup;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +28,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private BroadcastReceiver registrationBroadcastReceiver;
     
     @BindView(R.id.enroll_artist_button)
     Button artistButton;
@@ -43,6 +51,22 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        registrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                    Log.i(LOG_TAG, "registration complete");
+                    displayFirebaseRegId();
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    Log.i(LOG_TAG, "push notification");
+                    String message = intent.getStringExtra("mesage");
+                    Toast.makeText(MainActivity.this, "Push Notification" + message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+       // displayFirebaseRegId();
     }
     
     @OnClick(R.id.enroll_artist_button)
@@ -59,6 +83,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openArtistSignUp() {
+    }
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.i(LOG_TAG, "Firebase reg id: " + regId);
+
+       /* if (!TextUtils.isEmpty(regId))
+            txtRegId.setText("Firebase Reg Id: " + regId);
+        else
+            txtRegId.setText("Firebase Reg Id is not received yet!");*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(registrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(registrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtil.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(registrationBroadcastReceiver);
+        super.onPause();
     }
 
     @Override
