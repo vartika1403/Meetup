@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openArtistSignUp() {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
     }
 
     private void displayFirebaseRegId() {
