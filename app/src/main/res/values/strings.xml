@@ -11,4 +11,5 @@
     <string name="hello_want_to_enroll_as_artist_or_looking_for_one">Hello , want to enroll as artist or looking for one?</string>
     <string name="enroll_as_artist">Enroll as artist</string>
     <string name="looking_for_artist">Looking For Artist</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
