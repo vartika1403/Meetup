@@ -1,8 +1,11 @@
 package entertainment.meetup;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +16,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+    private DatabaseReference firebaseDatabase;
+    private final String FIREBASE_DOMAIN_URI = "https://meetup-99fea.firebaseio.com/Bands";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +35,9 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        firebaseDatabase = FirebaseDatabase.getInstance().
+                getReferenceFromUrl(FIREBASE_DOMAIN_URI);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,7 +46,6 @@ public class HomeActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,6 +54,36 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        doMySearch("bands");
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+    }
+
+    private void doMySearch(String query) {
+        if (query == null || query.isEmpty()) {
+            return;
+        }
+
+        firebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(LOG_TAG, "childrens," + dataSnapshot.getChildrenCount());
+                String bandName = dataSnapshot.getValue(String.class);
+                Log.i(LOG_TAG, "band Name, " + bandName);
+                if (bandName != null) {
+                   // showIfQuestNotSuccessfullyPlayed(currentQuestId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

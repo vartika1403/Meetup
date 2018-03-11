@@ -1,4 +1,4 @@
-package entertainment.meetup;
+package entertainment.meetup.common;
 
 
 public class Config {

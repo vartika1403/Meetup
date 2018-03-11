@@ -3,7 +3,6 @@ package entertainment.meetup;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -11,6 +10,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import entertainment.meetup.common.Config;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String LOG_TAG = MyFirebaseMessagingService.class.getSimpleName();

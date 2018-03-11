@@ -19,7 +19,6 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +28,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import entertainment.meetup.common.Config;
 
 public class NotificationUtil {
     private static String LOG_TAG = NotificationUtil.class.getSimpleName();

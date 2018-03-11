@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //Do something after 100ms
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }

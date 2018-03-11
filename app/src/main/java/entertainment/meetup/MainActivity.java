@@ -24,6 +24,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entertainment.meetup.common.Config;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
